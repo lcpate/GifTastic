@@ -3,15 +3,14 @@
 var topics = ["Carolina Panthers", "Atlanta Falcons", "Pittsburgh Steelers", "Washington Redskins", "Seattle Seahawks", "Kansas City Chiefs"];
 
 function displayTeams (){
-
-
-	$("button").on("click", function (){
+	
 
 		var team = $(this).attr("data-name");
+		console.log ('team ', team)
 
 		var queryURL = "https://api.giphy.com/v1/gifs/search?api_key=YumuHyK51v32US9X2c1t8jtLqEyx1C7Z&q=" + team + "&limit=10&offset=0&rating=PG&lang=en"
 
-// HAVE TO CLICK TWICE FOR IT TO WORK (TO MAKE THE GIFs APPEAR AND FOR THEM TO ANIMATE)
+
 		$.ajax({
 			url: queryURL,
 			method: "GET"
@@ -23,18 +22,18 @@ function displayTeams (){
 				for (var i = 0; i < results.length; i++) {
 
 					if(results[i].rating !== "r" && results[i].rating !== "pg-13"){
-						var newDiv = $("<div class='team'>");
+						var newDiv = $("<div>");
 
 						var rating = results[i].rating;
 						var p = $("<p>").text("Rating: " + rating);
 						
 
 						var image = $("<img>");
-
-							image.attr("class", "gif");
-							image.attr("data-still", results[i].images.fixed_height_still.url);
-								image.attr("data-animate", results[i].images.fixed_height.url);
-								$(image).attr("src", $(image).attr("data-still"));
+						image.attr("data-state", "still")
+						image.attr("class", "gif");
+						image.attr("data-still", results[i].images.fixed_height_still.url);
+						image.attr("data-animate", results[i].images.fixed_height.url);
+						image.attr("src", $(image).attr("data-still"));
 						
 
 						newDiv.append(p);
@@ -47,7 +46,7 @@ function displayTeams (){
 				}
 		})	
 			
-	})
+	
 }; 
 
 
@@ -79,22 +78,22 @@ function renderButtons(){
 	}
 }
 
-	$("#add-team").on("click", function(event){
-		event.preventDefault();
+$("#add-team").on("click", function(event){
+	event.preventDefault();
 
-		var newTeam = $("#team-input").val().trim();
+	var newTeam = $("#team-input").val().trim();
 
-		topics.push(newTeam);
-
-		renderButtons();
-		
-	});
-
-
-
-	$(document).on("click", ".team", displayTeams);
-	$(document).on("click", ".gif", playGifs);
+	topics.push(newTeam);
 
 	renderButtons();
+	
+});
+
+
+
+$(document).on("click", ".team", displayTeams);
+$(document).on("click", ".gif", playGifs);
+
+renderButtons();
 
 
