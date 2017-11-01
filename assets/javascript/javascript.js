@@ -86,6 +86,8 @@ $("#add-team").on("click", function(event){
 	topics.push(newTeam);
 
 	renderButtons();
+
+	$("#team-input").val("");
 	
 });
 
